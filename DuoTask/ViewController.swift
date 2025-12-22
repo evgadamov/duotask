@@ -11,6 +11,7 @@ class ViewController: UIViewController {
     
     private enum Constants {
         static let idCell = "taskCell"
+        static let appName = "DuoTask"
     }
     
     var taskStorage: [Task] = []
@@ -21,13 +22,14 @@ class ViewController: UIViewController {
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupTableView()
         setupMockData()
         setupStorage()
+        setupNavBar()
     }
     
     func setupTableView() {
@@ -44,6 +46,21 @@ class ViewController: UIViewController {
     func setupStorage() {
         tableview.register(UITableViewCell.self, forCellReuseIdentifier: Constants.idCell)
         tableview.dataSource = self
+    }
+    
+    func setupNavBar() {
+        self.title = Constants.appName
+        let addButton = UIBarButtonItem(
+            title: "Add",
+            style: .plain,
+            target: self,
+            action: #selector(didTapAddButton)
+        )
+        self.navigationItem.rightBarButtonItem = addButton
+    }
+    
+    @objc func didTapAddButton() {
+        print("button taped")
     }
     
     func setupMockData() {

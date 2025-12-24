@@ -12,6 +12,11 @@ class ViewController: UIViewController {
     private enum Constants {
         static let idCell = "taskCell"
         static let appName = "DuoTask"
+        static let imageSize: CGFloat = 50
+        static let addButtonImage = "plus.circle.fill"
+        static let addButtonOffsetBottom: CGFloat = 40
+        static let addButtonHeight: CGFloat = 50
+        static let addButtonWidth: CGFloat = 50
     }
     
     var taskStorage: [Task] = []
@@ -23,13 +28,28 @@ class ViewController: UIViewController {
         return tv
     }()
     
+    lazy var newAddButton: UIButton = {
+        let button = UIButton()
+        button.setImage(addButtonImage, for: .normal)
+        button.imageView?.contentMode = .scaleToFill
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    let addButtonImage: UIImage? = {
+        let config = UIImage.SymbolConfiguration(pointSize: Constants.imageSize)
+        let image = UIImage(systemName: Constants.addButtonImage, withConfiguration: config)
+        return image
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        self.title = Constants.appName
         setupTableView()
         setupMockData()
         setupStorage()
-        setupNavBar()
+        setupAddButton()
     }
     
     func setupTableView() {
@@ -48,15 +68,17 @@ class ViewController: UIViewController {
         tableview.dataSource = self
     }
     
-    func setupNavBar() {
-        self.title = Constants.appName
-        let addButton = UIBarButtonItem(
-            title: "Add",
-            style: .plain,
-            target: self,
-            action: #selector(didTapAddButton)
-        )
-        self.navigationItem.rightBarButtonItem = addButton
+    func setupAddButton() {
+        view.addSubview(newAddButton)
+
+        NSLayoutConstraint.activate([
+            newAddButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.addButtonOffsetBottom),
+            newAddButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            newAddButton.heightAnchor.constraint(equalToConstant: Constants.addButtonHeight),
+            newAddButton.widthAnchor.constraint(equalToConstant: Constants.addButtonWidth)
+        ])
+        
+        newAddButton.addTarget(self, action: #selector(didTapAddButton), for: .touchUpInside)
     }
     
     @objc func didTapAddButton() {

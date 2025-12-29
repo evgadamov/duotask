@@ -82,7 +82,17 @@ class ViewController: UIViewController {
     }
     
     @objc func didTapAddButton() {
-        print("button taped")
+        let bottomSheetVC = BottomSheetViewController()
+        bottomSheetVC.modalPresentationStyle = .pageSheet
+        
+        if let sheet = bottomSheetVC.sheetPresentationController {
+            sheet.detents = [.medium(), .large()]
+            sheet.selectedDetentIdentifier = .medium
+            sheet.prefersGrabberVisible = true
+            sheet.preferredCornerRadius = 12
+        }
+            
+        self.present(bottomSheetVC, animated: true)
     }
     
     func setupMockData() {

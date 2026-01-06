@@ -17,6 +17,7 @@ class ViewController: UIViewController {
         static let addButtonOffsetBottom: CGFloat = 40
         static let addButtonHeight: CGFloat = 50
         static let addButtonWidth: CGFloat = 50
+        static let sheetCornerRadius: CGFloat = 12
     }
     
     var taskStorage: [Task] = []
@@ -89,7 +90,7 @@ class ViewController: UIViewController {
             sheet.detents = [.medium(), .large()]
             sheet.selectedDetentIdentifier = .medium
             sheet.prefersGrabberVisible = true
-            sheet.preferredCornerRadius = 12
+            sheet.preferredCornerRadius = Constants.sheetCornerRadius
         }
             
         self.present(bottomSheetVC, animated: true)

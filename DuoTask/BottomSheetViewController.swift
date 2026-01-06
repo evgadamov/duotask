@@ -9,12 +9,31 @@ import UIKit
 
 class BottomSheetViewController: UIViewController {
     
+    private enum Constants {
+        static let borderWidth: CGFloat = 1
+        static let cornerRadius: CGFloat = 12
+        static let tfBorderColor: CGColor = UIColor.lightGray.cgColor
+        static let upperTFPlaceholder = "subject text field"
+        static let downTFPlaceholder = "body text field"
+        static let svAxis: NSLayoutConstraint.Axis = .vertical
+        static let svSpacing: CGFloat = 8
+        static let svDistribution: UIStackView.Distribution = .fillEqually
+        static let saveButtonText = "Save"
+        static let saveButtonColor: UIColor = .black
+        static let cancelButtonText = "Cancel"
+        static let cancelButtonColor: UIColor = .red
+        static let buttonBackgroundColor: UIColor = .lightGray
+        static let contentStackViewOffsetTop: CGFloat = 40
+        static let contentStackViewOffsetLeft: CGFloat = 40
+        static let contentStackViewOffsetRight: CGFloat = 40
+    }
+    
     let subjectTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "subject text field"
-        textField.layer.borderWidth = 1
-        textField.layer.borderColor = UIColor.lightGray.cgColor
-        textField.layer.cornerRadius = 12
+        textField.placeholder = Constants.upperTFPlaceholder
+        textField.layer.borderWidth = Constants.borderWidth
+        textField.layer.borderColor = Constants.tfBorderColor
+        textField.layer.cornerRadius = Constants.cornerRadius
         textField.layer.masksToBounds = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -22,10 +41,10 @@ class BottomSheetViewController: UIViewController {
     
     let bodyTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "body text field"
-        textField.layer.borderWidth = 1
-        textField.layer.borderColor = UIColor.lightGray.cgColor
-        textField.layer.cornerRadius = 12
+        textField.placeholder = Constants.downTFPlaceholder
+        textField.layer.borderWidth = Constants.borderWidth
+        textField.layer.borderColor = Constants.tfBorderColor
+        textField.layer.cornerRadius = Constants.cornerRadius
         textField.layer.masksToBounds = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -33,27 +52,27 @@ class BottomSheetViewController: UIViewController {
     
     let contentStackView: UIStackView = {
         let stackview = UIStackView()
-        stackview.axis = .vertical
-        stackview.spacing = 8
-        stackview.distribution = .fillEqually
+        stackview.axis = Constants.svAxis
+        stackview.spacing = Constants.svSpacing
+        stackview.distribution = Constants.svDistribution
         stackview.translatesAutoresizingMaskIntoConstraints = false
         return stackview
     }()
     
     let saveButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Save", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .lightGray
+        button.setTitle(Constants.saveButtonText, for: .normal)
+        button.setTitleColor(Constants.saveButtonColor, for: .normal)
+        button.backgroundColor = Constants.buttonBackgroundColor
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
     let cancelButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Cancel", for: .normal)
-        button.setTitleColor(.red, for: .normal)
-        button.backgroundColor = .lightGray
+        button.setTitle(Constants.cancelButtonText, for: .normal)
+        button.setTitleColor(Constants.cancelButtonColor, for: .normal)
+        button.backgroundColor = Constants.buttonBackgroundColor
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -72,15 +91,15 @@ class BottomSheetViewController: UIViewController {
         contentStackView.addArrangedSubview(cancelButton)
         
         NSLayoutConstraint.activate([
-            contentStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 40),
-            contentStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -40),
+            contentStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.contentStackViewOffsetTop),
+            contentStackView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -Constants.contentStackViewOffsetRight),
             contentStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            contentStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 40)
+            contentStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: Constants.contentStackViewOffsetLeft)
         ])
         
-        saveButton.layer.cornerRadius = 12
+        saveButton.layer.cornerRadius = Constants.cornerRadius
         saveButton.layer.masksToBounds = true
-        cancelButton.layer.cornerRadius = 12
+        cancelButton.layer.cornerRadius = Constants.cornerRadius
         cancelButton.layer.masksToBounds = true
     }
 }

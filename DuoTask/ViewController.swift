@@ -86,6 +86,8 @@ class ViewController: UIViewController {
         let bottomSheetVC = BottomSheetViewController()
         bottomSheetVC.modalPresentationStyle = .pageSheet
         
+        bottomSheetVC.delegate = self
+        
         if let sheet = bottomSheetVC.sheetPresentationController {
             sheet.detents = [.medium(), .large()]
             sheet.selectedDetentIdentifier = .medium
@@ -119,6 +121,14 @@ extension ViewController: UITableViewDataSource {
         config.secondaryText = item.body
         cell.contentConfiguration = config
         return cell
+    }
+}
+
+extension ViewController: TaskStorageDelegate {
+    
+    func giveTask(task: Task) {
+        taskStorage.append(task)
+        tableview.reloadData()
     }
 }
 

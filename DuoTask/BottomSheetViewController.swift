@@ -101,5 +101,14 @@ class BottomSheetViewController: UIViewController {
         saveButton.layer.masksToBounds = true
         cancelButton.layer.cornerRadius = Constants.cornerRadius
         cancelButton.layer.masksToBounds = true
+        
+        saveButton.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
+    }
+    
+    @objc func didTapSaveButton() {
+        let subject = subjectTextField.text ?? ""
+        let body = bodyTextField.text ?? ""
+        let task = Task(id: UUID(), subject: subject, body: body)
+        
     }
 }

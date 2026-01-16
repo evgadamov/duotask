@@ -116,6 +116,7 @@ extension ViewController: UITableViewDataSource {
         let item = taskStorage[indexPath.row]
         var config = cell.defaultContentConfiguration()
         config.text = item.subject
+        config.secondaryText = item.body
         cell.contentConfiguration = config
         return cell
     }

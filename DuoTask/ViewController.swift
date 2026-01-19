@@ -67,6 +67,7 @@ class ViewController: UIViewController {
     func setupStorage() {
         tableview.register(UITableViewCell.self, forCellReuseIdentifier: Constants.idCell)
         tableview.dataSource = self
+        tableview.delegate = self
     }
     
     func setupAddButton() {
@@ -132,3 +133,20 @@ extension ViewController: TaskStorageDelegate {
     }
 }
 
+extension ViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] action, view, compl in
+            
+            guard let self else {
+                return
+            }
+            
+            taskStorage.remove(at: indexPath.row)
+            tableview.reloadData()
+        }
+        
+        let config = UISwipeActionsConfiguration(actions: [deleteAction])
+        return config
+    }
+}

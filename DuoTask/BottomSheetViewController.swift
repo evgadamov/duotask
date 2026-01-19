@@ -28,6 +28,8 @@ class BottomSheetViewController: UIViewController {
         static let contentStackViewOffsetRight: CGFloat = 40
     }
     
+    var delegate: TaskStorageDelegate?
+    
     let subjectTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = Constants.upperTFPlaceholder
@@ -110,5 +112,7 @@ class BottomSheetViewController: UIViewController {
         let body = bodyTextField.text ?? ""
         let task = Task(id: UUID(), subject: subject, body: body)
         
+        delegate?.giveTask(task: task)
+        dismiss(animated: true)
     }
 }

@@ -13,7 +13,9 @@ class BottomSheetViewController: UIViewController {
         static let borderWidth: CGFloat = 1
         static let cornerRadius: CGFloat = 12
         static let tfBorderColor: CGColor = UIColor.lightGray.cgColor
+        static let tfBorderColorError: CGColor = UIColor.red.cgColor
         static let upperTFPlaceholder = "subject text field"
+        static let upperTFPlaceHolderError = "Type something"
         static let downTFPlaceholder = "body text field"
         static let svAxis: NSLayoutConstraint.Axis = .vertical
         static let svSpacing: CGFloat = 8
@@ -105,14 +107,44 @@ class BottomSheetViewController: UIViewController {
         cancelButton.layer.masksToBounds = true
         
         saveButton.addTarget(self, action: #selector(didTapSaveButton), for: .touchUpInside)
+        
+        subjectTextField.delegate = self
+    }
+    
+    private func clearErrorSubjectTextField() {
+        subjectTextField.layer.borderColor = Constants.tfBorderColor
+        subjectTextField.placeholder = nil
     }
     
     @objc func didTapSaveButton() {
-        let subject = subjectTextField.text ?? ""
+        guard let subject = subjectTextField.text,
+              !subject.isEmpty
+        else {
+            redAlert()
+            subjectTextField.resignFirstResponder()
+            return
+        }
+        
         let body = bodyTextField.text ?? ""
         let task = Task(id: UUID(), subject: subject, body: body)
         
         delegate?.giveTask(task: task)
+        clearErrorSubjectTextField()
         dismiss(animated: true)
+    }
+    
+    func redAlert() {
+        subjectTextField.layer.borderColor = Constants.tfBorderColorError
+        subjectTextField.attributedPlaceholder = NSAttributedString(
+            string: Constants.upperTFPlaceHolderError,
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.red]
+        )
+    }
+}
+
+extension BottomSheetViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        clearErrorSubjectTextField()
     }
 }

@@ -48,7 +48,7 @@ class ViewController: UIViewController {
         view.backgroundColor = .systemBackground
         self.title = Constants.appName
         setupTableView()
-        setupMockData()
+        taskStorage = TaskUserDefaultsStorage.load()
         setupStorage()
         setupAddButton()
     }
@@ -99,12 +99,6 @@ class ViewController: UIViewController {
         self.present(bottomSheetVC, animated: true)
     }
     
-    func setupMockData() {
-        taskStorage = [
-            Task(id: UUID(), subject: "task 1", body: "hello"),
-            Task(id: UUID(), subject: "task 2", body: "bye"),
-            Task(id: UUID(), subject: "task 3", body: "hi")
-        ]
     }
 }
 
@@ -129,6 +123,7 @@ extension ViewController: TaskStorageDelegate {
     
     func giveTask(task: Task) {
         taskStorage.append(task)
+        TaskUserDefaultsStorage.save(taskStorage)
         tableview.reloadData()
     }
 }
@@ -143,6 +138,7 @@ extension ViewController: UITableViewDelegate {
             }
             
             taskStorage.remove(at: indexPath.row)
+            TaskUserDefaultsStorage.save(taskStorage)
             tableview.reloadData()
         }
         

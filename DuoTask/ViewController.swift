@@ -48,7 +48,6 @@ class ViewController: UIViewController {
         view.backgroundColor = .systemBackground
         self.title = Constants.appName
         setupTableView()
-        setupMockData()
         setupStorage()
         setupAddButton()
     }
@@ -68,6 +67,7 @@ class ViewController: UIViewController {
         tableview.register(UITableViewCell.self, forCellReuseIdentifier: Constants.idCell)
         tableview.dataSource = self
         tableview.delegate = self
+        taskStorage = TaskUserDefaultsStorage.load()
     }
     
     func setupAddButton() {
@@ -90,8 +90,6 @@ class ViewController: UIViewController {
         bottomSheetVC.delegate = self
         
         if let sheet = bottomSheetVC.sheetPresentationController {
-            sheet.detents = [.medium(), .large()]
-            sheet.selectedDetentIdentifier = .medium
             sheet.prefersGrabberVisible = true
             sheet.preferredCornerRadius = Constants.sheetCornerRadius
         }
@@ -99,12 +97,10 @@ class ViewController: UIViewController {
         self.present(bottomSheetVC, animated: true)
     }
     
-    func setupMockData() {
-        taskStorage = [
-            Task(id: UUID(), subject: "task 1", body: "hello"),
-            Task(id: UUID(), subject: "task 2", body: "bye"),
-            Task(id: UUID(), subject: "task 3", body: "hi")
-        ]
+    private func deleteTasks(row: Int) {
+        taskStorage.remove(at: row)
+        TaskUserDefaultsStorage.save(tasks: taskStorage)
+        tableview.reloadData()
     }
 }
 
@@ -129,6 +125,7 @@ extension ViewController: TaskStorageDelegate {
     
     func giveTask(task: Task) {
         taskStorage.append(task)
+        TaskUserDefaultsStorage.save(tasks: taskStorage)
         tableview.reloadData()
     }
 }
@@ -142,8 +139,7 @@ extension ViewController: UITableViewDelegate {
                 return
             }
             
-            taskStorage.remove(at: indexPath.row)
-            tableview.reloadData()
+            deleteTasks(row: indexPath.row)
         }
         
         let config = UISwipeActionsConfiguration(actions: [deleteAction])

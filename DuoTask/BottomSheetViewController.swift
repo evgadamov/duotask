@@ -39,6 +39,7 @@ class BottomSheetViewController: UIViewController {
         textField.layer.borderColor = Constants.tfBorderColor
         textField.layer.cornerRadius = Constants.cornerRadius
         textField.layer.masksToBounds = true
+        textField.autocorrectionType = .no
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
@@ -50,6 +51,7 @@ class BottomSheetViewController: UIViewController {
         textField.layer.borderColor = Constants.tfBorderColor
         textField.layer.cornerRadius = Constants.cornerRadius
         textField.layer.masksToBounds = true
+        textField.autocorrectionType = .no
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
